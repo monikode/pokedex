@@ -1,6 +1,7 @@
 var list = [];
 var range = 20;
 
+
 $(document).ready(function () {
   carregaLista();
 
@@ -27,10 +28,10 @@ async function addElements() {
   if ($(".element").length <= range && $(".element").length < list.length) {
     for (var i = range; i < range + 20; i++) {
       await $.get(list[i].url, function (data) {
-        img = '<img src="' + data.sprites.front_default + '" alt="">';
+       
         nome = "<div>" + list[i].name + "</div>";
         $(".lista").append(
-          "<div class='element' id='" + i + "'>" + img + nome + "</div>"
+          "<div class='element' id='" + i + "'>"  + nome + "</div>"
         );
       });
       $(".element:eq(" + i + ")").click(function () {
@@ -44,7 +45,7 @@ async function addElements() {
 
 async function mudaAtual({ url, name }) {
   await $.get(url, function (data) {
-    $(".foto img").attr("src", data.sprites.front_default);
+  
     $(".nome").text(name);
   });
 }
@@ -63,10 +64,9 @@ async function carregaLista() {
 
   for (var i = 0; i < 20; i++) {
     await $.get(list[i].url, function (data) {
-      img = '<img src="' + data.sprites.front_default + '" alt="">';
-      nome = "<div>" + list[i].name + "</div>";
+      nome = "<div> " + list[i].name + " </div>";
       $(".lista").append(
-        "<div class='element' id='" + i + "'>" + img + nome + "</div>"
+        "<div class='element' id='" + i + "'>"  + nome + "</div>"
       );
     });
     $(".element:eq(" + i + ")").click(function () {
@@ -75,3 +75,28 @@ async function carregaLista() {
     });
   }
 }
+
+var app = new Vue({
+  el: '#app',
+  data: {
+      message: 'Hello World',
+      isVisible: false,
+      list: [
+          {text: 'item 1'},
+          {text: 'item 2'},
+          {text: 'item 3'},
+      ],
+      myHTML: '<input type="text"/>',
+      counter: 0,
+      isCreated: false
+  },
+  methods: {
+      upCounter: function() {
+          this.counter++;
+      }
+  },
+  created: function(){
+      this.isCreated = true
+  }
+  //beforeCreate>created>beforeMount>mounted>beforeupdate>updated>beforedestroy>destroyed
+})

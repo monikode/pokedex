@@ -1,31 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="index.css">
     <title>Pokedex</title>
 </head>
-<body>
-    <header class="topo">
-        <input type="search">
-    </header>
-    <div class="nav">
-        <div class="lista"></div>
-    </div>
-    <div class="container">
-        <div>
-            <div class="foto">
-                <img src="" alt="">
+
+<body >
+    <div id="app">
+        <div v-show="isCreated">
+            <header class="topo">
+                <div>
+                    <input type="search">
+                <button>Search</button>
+                <button>Sort</button>
+                </div>
+                
+                <div> Filter
+                </div>
+            </header>
+            <div class="nav">
+                <div class="lista"></div>
             </div>
-            <div class="nome"></div>
-            <div class="infos">infos</div>
-            <div class="esquerda"> esquerda</div>
-            <div class="direita">diretia</div>
+        
+            <div class="container">
+                <div>
+                    
+                    <div class="title">
+                        <div class="emoji">Fire</div>
+                        <div class="type">Fire</div>
+                        <div class="name">Charmander</div>
+                        <div class="desc">It has a preference for hot things. When it rains, steam is said to spout from the tip of its tail.</div>
+                        <img class="picture" src="sprites/sprites/pokemon/other/official-artwork/4.png"></img>
+                    </div>
+                    <div class="details">
+                        <div class="row">
+                            <span>Height</span>
+                            <span>0.6M</span>
+                        </div>
+                    </div>
+                    <div class="stats">
+                        <span>
+                            Stats
+                        </span>
+                    </div>
+                    <div class="evolutions"></div>
+                </div>
+            </div>
+            <div class="fixed">
+                <button>
+                    back
+                </button>
+                <button>
+                    next
+                </button>
+                <div class="github"></div>
+                <div class="dribbble"></div>
+            </div>  
         </div>
+        <div v-show="!isCreated">
+            <div>Loading </div>
+        </div>
+    
     </div>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>
