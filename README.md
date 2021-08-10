@@ -1,7 +1,7 @@
 # pokedex
 Pokedex site 
--[x] Style 
--[x] Structure
--[] Responsivity
--[] Search
--[] Filter
+- [x] Style 
+- [x] Structure
+- [] Responsivity
+- [] Search
+- [] Filter
