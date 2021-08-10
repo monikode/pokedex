@@ -8,67 +8,57 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="index.css">
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
     <title>Pokedex</title>
 </head>
 
 <body >
-    <div id="app">
-        <div v-show="isCreated">
+    <div id="app" >
+        <div v-if="isCreated" class="container">
+         
+            <div class="number">
+                {{getFormattedId()}}
+              </div>
+            <i class="icon ion-ios-arrow-back back"></i>
+
+            <i class="icon ion-ios-arrow-forward next"></i>
+
+            <div class="credits"> 
+                <a class="github" href="https://github.com/monikode">
+                    <i class="icon ion-logo-github"></i>
+                </a>
+                <a class="dribbble" href="https://dribbble.com/monnifs">
+                    <i class="icon ion-logo-dribbble"></i>
+
+                </a>
+                <div class="line"></div>
+            </div>
             <header class="topo">
-                <div>
-                    <input type="search">
-                <button>Search</button>
-                <button>Sort</button>
+                <div class="input-box">
+                    <input type="search" placeholder="Search here">
+                 <i class="icon ion-ios-search"></i>
+                 <i class="icon ion-ios-shuffle"></i>
                 </div>
                 
-                <div> Filter
+                <div class="filter"> Filter
+                    <i class="icon ion-ios-arrow-down"></i>
+
                 </div>
             </header>
             <div class="nav">
-                <div class="lista"></div>
+                <nav-list/>
             </div>
+            
         
-            <div class="container">
-                <div>
-                    
-                    <div class="title">
-                        <div class="emoji">Fire</div>
-                        <div class="type">Fire</div>
-                        <div class="name">Charmander</div>
-                        <div class="desc">It has a preference for hot things. When it rains, steam is said to spout from the tip of its tail.</div>
-                        <img class="picture" src="sprites/sprites/pokemon/other/official-artwork/4.png"></img>
-                    </div>
-                    <div class="details">
-                        <div class="row">
-                            <span>Height</span>
-                            <span>0.6M</span>
-                        </div>
-                    </div>
-                    <div class="stats">
-                        <span>
-                            Stats
-                        </span>
-                    </div>
-                    <div class="evolutions"></div>
-                </div>
-            </div>
-            <div class="fixed">
-                <button>
-                    back
-                </button>
-                <button>
-                    next
-                </button>
-                <div class="github"></div>
-                <div class="dribbble"></div>
-            </div>  
+            <data-component :pokemon-id="actualId"></data-component>
         </div>
-        <div v-show="!isCreated">
+        <div v-else="!isCreated">
             <div>Loading </div>
         </div>
     
     </div>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="js/index.js"></script>
+
 </body>
 </html>

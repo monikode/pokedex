@@ -1,102 +1,182 @@
-var list = [];
 var range = 20;
-
+var POKEAPI = "https://pokeapi.co/api/v2/";
 
 $(document).ready(function () {
-  carregaLista();
-
   $("input").on("input", function () {
     // do something
+    var aux = list.filter((el) => el.name.includes($("input").val()));
+    console.log(aux);
+    if (aux.length > 0 && $("input").val().trim().length > 0)
+      $(".input-box").addClass("searching");
+    else $(".input-box").removeClass("searching");
     $(".element").each(function () {
-      if ($(this).text().includes($("input").val())) $(this).show();
+      if ($(this).text().includes($("input").val().trim())) $(this).show();
       else $(this).hide();
     });
   });
-
-  $(".nav").on("scroll", function () {
-    if ($(".nav").css("overflow-y") === "scroll") {
-      if (this.scrollTop >= this.scrollHeight - this.offsetHeight)
-        addElements();
-    } else {
-      if (this.scrollLeft >= this.scrollWidth - this.offsetWidth) addElements();
-    }
-  });
 });
 
-async function addElements() {
-  console.log($(".element").length, range);
-  if ($(".element").length <= range && $(".element").length < list.length) {
-    for (var i = range; i < range + 20; i++) {
-      await $.get(list[i].url, function (data) {
-       
-        nome = "<div>" + list[i].name + "</div>";
-        $(".lista").append(
-          "<div class='element' id='" + i + "'>"  + nome + "</div>"
-        );
-      });
-      $(".element:eq(" + i + ")").click(function () {
-        var i = this.id;
-        mudaAtual(list[i]);
-      });
-    }
-    range += 20;
-  }
-}
+Vue.component("nav-list", {
+  template: `
+  <div class="lista">
+    <span v-for="(item, i) in list" class="element" :key="i" >
+      <div @click = "$root.onHorizontalClick(item.url)">{{item.name}}</div>
+    </span>
+  </div>
+  `,
+  data: function () {
+    return {
+      list: [{ name: "aaa" }],
+    };
+  },
+  methods: {},
+  created: async function () {
+    var aux = this.list;
+    var response = await $.get(POKEAPI + "pokemon?limit=1200", function (data) {
+      aux = data.results;
+      console.log(aux);
+    });
+    this.list = aux;
+    return response;
+  },
+});
 
-async function mudaAtual({ url, name }) {
-  await $.get(url, function (data) {
+Vue.component("data-component", {
+  template: `
+  <div class="content">
+  <div>
   
-    $(".nome").text(name);
-  });
-}
+      <div class="title">
+          <div class="subgrid">
+              <div class="emoji">
+                  <img src="./assets/icons/fire.svg"/>
+              </div>
+              <div class="type">{{pokemon.types[0].type.name}}</div>
+              <div class="name">{{pokemon.name}}</div>
+              <div class="desc">It has a preference for hot things. When it rains, steam is said to spout from the tip of its tail.</div>
+              <div class="details">
+                  <div class="row">
+                      <span>Height</span>
+                      <span>{{getHeight()}}</span>
+                  </div>
+                  <div class="row">
+                      <span>Weight</span>
+                      <span>{{getWeight()}}</span>
+                  </div>
+                  <div class="row">
+                      <span>Category</span>
+                      <span>Lizard</span>
+                  </div>
+                  <div class="row" >
+                      <span>Abilities</span>
+                      <span>{{getAbility()}}</span>
+                  </div>
+              </div>
+          </div>
+   
+          <div class="picture">
+              <img class="picture" :src="getImg(pokemon.id)"></img>
 
-async function carregaLista() {
-  var img = "";
-
-  await $.get(
-    "https://pokeapi.co/api/v2/pokemon?limit=1200&offset=0",
-    function (data) {
-      list = data.results;
-      console.log(list.length);
-      mudaAtual(list[0]);
-    }
-  );
-
-  for (var i = 0; i < 20; i++) {
-    await $.get(list[i].url, function (data) {
-      nome = "<div> " + list[i].name + " </div>";
-      $(".lista").append(
-        "<div class='element' id='" + i + "'>"  + nome + "</div>"
-      );
-    });
-    $(".element:eq(" + i + ")").click(function () {
-      var i = this.id;
-      mudaAtual(list[i]);
-    });
-  }
-}
-
-var app = new Vue({
-  el: '#app',
-  data: {
-      message: 'Hello World',
-      isVisible: false,
-      list: [
-          {text: 'item 1'},
-          {text: 'item 2'},
-          {text: 'item 3'},
-      ],
-      myHTML: '<input type="text"/>',
-      counter: 0,
-      isCreated: false
+          </div>
+      </div>
+     
+      <div class="stats">
+          <span>
+              Stats
+          </span>
+      </div>
+      <div class="evolutions"></div>
+  </div>
+</div>  
+  `,
+  data: function () {
+    return {
+      pokemon: {
+        name: "Charmander",
+      },
+    };
+  },
+  watch: {
+    // a computed getter
+    "$root.actualId": function () {
+      console.log("mudou id");
+      this.loadPokemon();
+      return this.actualId;
+    },
   },
   methods: {
-      upCounter: function() {
-          this.counter++;
-      }
+    getImg(id) {
+      return "assets/pokemon/" + id + ".png";
+    },
+    async loadPokemon() {
+      var aux = this.pokemon;
+      console.log();
+      var response = await $.get(
+        POKEAPI + "pokemon/" + this.$root.actualId,
+        function (data) {
+          aux = data;
+        }
+      );
+
+      this.pokemon = aux;
+      console.log(this.pokemon);
+      return response;
+    },
+    getHeight() {
+      var str = this.pokemon.height / 10;
+      return str + "M";
+    },
+    getWeight() {
+      var str = this.pokemon.weight / 10;
+      return str + "KG";
+    },
+    getAbility() {
+      var str = this.pokemon.abilities[0].ability.name;
+      str = str.replaceAll("-", " ");
+      return str;
+    },
   },
-  created: function(){
-      this.isCreated = true
-  }
-  //beforeCreate>created>beforeMount>mounted>beforeupdate>updated>beforedestroy>destroyed
-})
+  created: function () {
+    this.loadPokemon();
+  },
+});
+
+var app = new Vue({
+  el: "#app",
+  data: {
+    types: [{ name: "Fire", color: "" }],
+    actualId: 4,
+    isCreated: false,
+  },
+  methods: {
+    onClick: function (url) {
+      console.log("clicou");
+      $.get(url, function (data) {
+        console.log(data);
+      });
+    },
+    getActualId: function () {
+      return this.actualId;
+    },
+    getFormattedId: function () {
+      var str = this.actualId.toString();
+      while (str.length < 3) {
+        str = "0" + str;
+      }
+      return `#${str}`;
+    },
+    onHorizontalClick: async function (url) {
+      var aux = this.actualId;
+      var response = await $.get(url, function (data) {
+        aux = data.id;
+      });
+
+      this.actualId = aux;
+      console.log(this.actualId);
+      return response;
+    },
+  },
+  mounted: function () {
+    this.isCreated = true;
+  },
+});

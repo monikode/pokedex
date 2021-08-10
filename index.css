@@ -1,3 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+
 html {
   height: 100%;
 }
@@ -9,48 +13,67 @@ body {
   height: 100%;
 }
 
+#app {
+  position: relative;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.63) 0%,
+      rgba(0, 0, 0, 0.63) 100%
+    ),
+    #ff3f02;
+  background-blend-mode: soft-light, normal;
+  font-family: "Montserrat" !important;
+  width: 100%;
+  height: 100%;
+}
+
 .topo {
   grid-area: topo;
   width: 100%;
   height: 40px;
   margin: 0;
   display: flex;
-  height: 25px;
+  padding: 20px 0;
   justify-content: space-between;
 }
 
 .nav {
   height: max-content;
   overflow: scroll;
+  color: #ffffff;
+  position: relative;
+  z-index: 3;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 6.1%,
+    rgba(255, 255, 255, 0) 6.1%,
+    #ffffff 34.46%,
+    #ffffff 70.17%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 6.1%,
+    rgba(255, 255, 255, 0) 6.1%,
+    #ffffff 34.46%,
+    #ffffff 70.17%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 4;
+}
+::-webkit-scrollbar {
+  width: 0;
 }
 
 .lista {
   display: flex;
-
+  margin: 0 45%;
 }
 
 .element {
   cursor: pointer;
   margin: 0 15px;
-}
-
-.container {
-  grid-area: container;
-  background-color: brown;
-  color: #ffff;
-  padding-top: 50px;
-  padding-left: 30px;
-  clip-path: polygon(1% 8%, 100% 0, 100% 100%, 1% 100%);
-}
-
-.container > div {
-  margin: 0 auto;
-  max-width: 700px;
-}
-
-.foto {
-  grid-area: foto;
-  text-align: center;
+  text-transform: capitalize;
 }
 
 .nome {
@@ -70,8 +93,245 @@ body {
   grid-area: direita;
 }
 
-@media screen and (max-width: 668px) {
+/* container */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+}
 
+.input-box {
+  height: min-content;
+  background-color: rgba(255, 255, 255, 0.22);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.input-box input {
+  background: none;
+  outline: none;
+  border: none;
+  color: #ffffff;
+  font-family: "Montserrat";
+}
+
+.input-box.searching {
+  border-radius: 5px 5px 0 0;
+}
+
+.bold {
+  font-weight: 800;
+}
+
+.input-box ::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+
+  font-family: "Montserrat";
+}
+.input-box i {
+  color: #ffffff;
+  font-size: 20px;
+  margin: 0 5px;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  height: 1em;
+  width: 1em;
+  border-radius: 50em;
+  background: url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg)
+    no-repeat 50% 50%;
+  background-size: contain;
+  filter: invert(1);
+  opacity: 1;
+}
+
+.content {
+  position: relative;
+
+  width: auto;
+  display: flex;
+  color: #ffffff;
+  z-index: 3;
+}
+
+.content > div {
+  width: 100%;
+}
+
+.title {
+  display: flex;
+  justify-content: stretch;
+  width: 100%;
+}
+.subgrid {
+  min-width: 50%;
+  display: grid;
+  grid-template-areas: "... ..." "emoji type" "emoji name" "desc desc" "details details";
+  grid-template-rows: 150px min-content min-content min-content;
+  grid-template-columns: min-content;
+}
+.emoji {
+  grid-area: emoji;
+  padding-right: 10px;
+}
+.type {
+  margin-top: auto;
+  grid-area: type;
+  text-transform: uppercase;
+  margin-bottom: -20px;
+  margin-left: 10px;
+  opacity: 0.8;
+  font-weight: 500;
+}
+.name {
+  grid-area: name;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 64px;
+  line-height: 88px;
+  color: #ffffff;
+  text-transform: capitalize;
+}
+.desc {
+  grid-area: desc;
+  font-size: 14px;
+  line-height: 17px;
+  padding-bottom: 25px;
+  display: none;
+}
+.details {
+  grid-area: details;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  text-transform: capitalize;
+  justify-content: space-between;
+}
+
+.row :first-child {
+  font-weight: bold;
+}
+
+.row :last-child {
+  width: 100%;
+  text-align: end;
+}
+.picture {
+  position: relative;
+  pointer-events: none;
+  height: 400px;
+  width: min-content;
+  z-index: 2;
+}
+
+
+.picture::before {
+  content: '';
+  display: block;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  background-color: rgba(0, 0, 0, 0.1);
+  -webkit-mask-image: radial-gradient(ellipse 100% 40% at 50% 70%, black 20%, transparent 50%);
+  mask-image: radial-gradient(ellipse 100% 40% at 48% 78%, black 20%, transparent 70%);
+}
+/* pokedex */
+.number {
+  position: absolute;
+  font-family: Montserrat;
+  font-weight: 900;
+  font-size: 250px;
+
+  color: rgba(255, 255, 255, 0.18);
+  user-select: none;
+  right: 0;
+  top: 50px;
+  z-index: 1;
+}
+.back {
+  position: fixed;
+  left: 45px;
+  top: 45%;
+}
+
+.back:hover {
+  left: 35px;
+}
+
+.next {
+  position: fixed;
+  right: 45px;
+  top: 45%;
+}
+
+.next:hover {
+  right: 35px;
+}
+
+.back,
+.next {
+  color: #ffffff;
+  font-size: 50px;
+  opacity: 0.45;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.back:hover,
+.next:hover {
+  opacity: 1;
+}
+
+.credits {
+  position: fixed;
+  left: 30px;
+  bottom: 0;
+  color: #ffffff;
+  width: 50px;
+}
+.credits > div,
+.credits > a {
+  margin: 0 auto;
+  text-align: center;
+  color: #ffffff;
+  display: block;
+  font-size: 40px;
+  opacity: 0.7;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.github,
+.dribbble {
+  cursor: pointer;
+}
+
+.github:hover,
+.dribbble:hover {
+  cursor: pointer;
+  opacity: 1 !important;
+}
+
+.credits .line {
+  height: 100px;
+  background-color: #ffffff;
+  width: 1px;
+}
+
+.filter {
+  color: #ffffff;
+  margin: auto 0;
+}
+
+.filter i {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 668px) {
   .nav {
     width: 100%;
     height: max-content;
@@ -83,5 +343,4 @@ body {
     height: max-content;
     display: flex;
   }
-
 }
