@@ -2,6 +2,6 @@
 Pokedex site 
 - [x] Style 
 - [x] Structure
-- [] Responsivity
-- [] Search
-- [] Filter
+- [ ] Responsivity
+- [ ] Search
+- [ ] Filter
