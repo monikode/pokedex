@@ -11,6 +11,27 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
+
+  --fire: #ff7402;
+  --grass: #33a165;
+  --steel: #00858a;
+  --water: #0050ac;
+  --psychic: #c90086;
+  --ground: #c90086;
+  --ice: #70deff;
+  --flying: #5d4e75;
+  --ghost: #4d5b64;
+  --normal: #753845;
+  --poison: #7e0058;
+  --rock: #6e1a00;
+  --fighting: #634136;
+  --dark: #272625;
+  --bug: #6e1a00;
+  --dragon: #00c431;
+  --electric: #bba909;
+  --fairy: #d31c81;
+  --unknow: #757575;
+  --shadow: #29292c;
 }
 
 #app {
@@ -25,7 +46,47 @@ body {
   font-family: "Montserrat" !important;
   width: 100%;
   height: 100%;
+  transition: all 0.5s ease-in-out;
 }
+
+#app.dark {
+  color: #0c0c0d !important ;
+}
+.dark .title,
+.dark .name,
+.dark .nav,
+.dark .filter,
+.dark .input-box i,
+.dark .input-box,
+.dark .input-box input,
+.dark .content,
+.dark .back,
+.dark .next,
+.dark .github,
+.dark .dribbble
+{
+  color: #0c0c0d !important ;
+}
+
+.dark .line {
+  background-color: #0c0c0d !important ;
+
+}
+
+.dark .input-box ::placeholder
+{
+  color: rgba(0, 0, 0, 0.75);
+
+}
+
+
+.dark input[type="search"]::-webkit-search-cancel-button {
+  background: url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg)
+    no-repeat 50% 50%;
+  background-size: contain;
+  opacity: 1;
+}
+
 
 .topo {
   grid-area: topo;
@@ -151,6 +212,7 @@ input[type="search"]::-webkit-search-cancel-button {
   display: flex;
   color: #ffffff;
   z-index: 3;
+  transition: opacity padding 0.5s ease-in-out;
 }
 
 .content > div {
@@ -168,19 +230,22 @@ input[type="search"]::-webkit-search-cancel-button {
   grid-template-areas: "... ..." "emoji type" "emoji name" "desc desc" "details details";
   grid-template-rows: 150px min-content min-content min-content;
   grid-template-columns: min-content;
+  transition: opacity padding 0.5s ease-in-out;
+
 }
 .emoji {
   grid-area: emoji;
   padding-right: 10px;
+  margin: auto 0;
 }
 .type {
   margin-top: auto;
   grid-area: type;
   text-transform: uppercase;
-  margin-bottom: -20px;
   margin-left: 10px;
   opacity: 0.8;
   font-weight: 500;
+  transition: all 0.5s ease-in-out;
 }
 .name {
   grid-area: name;
@@ -188,9 +253,10 @@ input[type="search"]::-webkit-search-cancel-button {
   font-style: normal;
   font-weight: bold;
   font-size: 64px;
-  line-height: 88px;
+  line-height: 60px;
   color: #ffffff;
   text-transform: capitalize;
+  transition: all 0.5s ease-in-out;
 }
 .desc {
   grid-area: desc;
@@ -224,11 +290,11 @@ input[type="search"]::-webkit-search-cancel-button {
   height: 400px;
   width: min-content;
   z-index: 2;
+  transition: opacity padding 0.5s ease-in-out;
 }
 
-
 .picture::before {
-  content: '';
+  content: "";
   display: block;
   bottom: 0;
   left: 0;
@@ -236,8 +302,16 @@ input[type="search"]::-webkit-search-cancel-button {
   width: 100%;
   height: 50%;
   background-color: rgba(0, 0, 0, 0.1);
-  -webkit-mask-image: radial-gradient(ellipse 100% 40% at 50% 70%, black 20%, transparent 50%);
-  mask-image: radial-gradient(ellipse 100% 40% at 48% 78%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(
+    ellipse 100% 40% at 50% 70%,
+    black 20%,
+    transparent 50%
+  );
+  mask-image: radial-gradient(
+    ellipse 100% 40% at 48% 78%,
+    black 20%,
+    transparent 70%
+  );
 }
 /* pokedex */
 .number {
@@ -331,6 +405,21 @@ input[type="search"]::-webkit-search-cancel-button {
   cursor: pointer;
 }
 
+/* transitions */
+.content.fade-in{
+  opacity: 0;
+  padding-top: 30px;
+}
+
+.fade-in .picture {
+  opacity: 0;
+  margin-right: -60px;
+}
+.fade-in .subgrid {
+  opacity: 0;
+  margin-left: -60px;
+}
+/* query */
 @media screen and (max-width: 668px) {
   .nav {
     width: 100%;

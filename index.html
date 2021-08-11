@@ -19,9 +19,9 @@
             <div class="number">
                 {{getFormattedId()}}
               </div>
-            <i class="icon ion-ios-arrow-back back"></i>
+            <i class="icon ion-ios-arrow-back back" @click="onBackClick"></i>
 
-            <i class="icon ion-ios-arrow-forward next"></i>
+            <i class="icon ion-ios-arrow-forward next"  @click="onNextClick"></i>
 
             <div class="credits"> 
                 <a class="github" href="https://github.com/monikode">
@@ -33,18 +33,8 @@
                 </a>
                 <div class="line"></div>
             </div>
-            <header class="topo">
-                <div class="input-box">
-                    <input type="search" placeholder="Search here">
-                 <i class="icon ion-ios-search"></i>
-                 <i class="icon ion-ios-shuffle"></i>
-                </div>
-                
-                <div class="filter"> Filter
-                    <i class="icon ion-ios-arrow-down"></i>
-
-                </div>
-            </header>
+            <search-component></search-component>
+        
             <div class="nav">
                 <nav-list/>
             </div>

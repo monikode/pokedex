@@ -1,25 +1,36 @@
 var range = 20;
 var POKEAPI = "https://pokeapi.co/api/v2/";
 
-$(document).ready(function () {
-  $("input").on("input", function () {
-    // do something
-    var aux = list.filter((el) => el.name.includes($("input").val()));
-    console.log(aux);
-    if (aux.length > 0 && $("input").val().trim().length > 0)
-      $(".input-box").addClass("searching");
-    else $(".input-box").removeClass("searching");
-    $(".element").each(function () {
-      if ($(this).text().includes($("input").val().trim())) $(this).show();
-      else $(this).hide();
-    });
-  });
+Vue.component("search-component", {
+  template: `
+  <header class="topo" ref="sc">
+  <div class="input-box">
+      <input type="search" placeholder="Search here" v-model="value">
+   <i class="icon ion-ios-search"></i>
+   <i class="icon ion-ios-shuffle" @click="$root.sortId"></i>
+  </div>
+  
+  <div class="filter"> Filter
+      <i class="icon ion-ios-arrow-down"></i>
+
+  </div>
+</header>`,
+  data: function () {
+    return {
+      value: "",
+    };
+  },
+  watch: {
+    value: function (data) {
+      this.$parent.changeList(data);
+    },
+  },
 });
 
 Vue.component("nav-list", {
   template: `
   <div class="lista">
-    <span v-for="(item, i) in list" class="element" :key="i" >
+    <span v-for="(item, i) in filtered" class="element" :key="i" >
       <div @click = "$root.onHorizontalClick(item.url)">{{item.name}}</div>
     </span>
   </div>
@@ -27,6 +38,7 @@ Vue.component("nav-list", {
   data: function () {
     return {
       list: [{ name: "aaa" }],
+      filtered: [{ name: "aaa" }],
     };
   },
   methods: {},
@@ -34,9 +46,34 @@ Vue.component("nav-list", {
     var aux = this.list;
     var response = await $.get(POKEAPI + "pokemon?limit=1200", function (data) {
       aux = data.results;
-      console.log(aux);
     });
     this.list = aux;
+    this.filtered = aux;
+
+    this.$root.$on("filter", (value) => {
+      this.filtered = this.list.filter((el) => el.name.includes(value.trim()));
+    });
+
+    this.$root.$on("back", () => {
+      var i = this.list.filter(
+        (el) => el.url == `${POKEAPI}pokemon/${this.$root.actualId}/`
+      );
+      i = this.list.indexOf(i[0]) - 1;
+      this.$root.onHorizontalClick(this.list[i].url);
+    });
+    this.$root.$on("next", () => {
+      var i = this.list.filter(
+        (el) => el.url == `${POKEAPI}pokemon/${this.$root.actualId}/`
+      );
+      i = this.list.indexOf(i[0]) + 1;
+      this.$root.onHorizontalClick(this.list[i].url);
+    });
+    this.$root.$on("sort", () => {
+      var tam = this.filtered.length;
+      var random = Math.floor(Math.random() * tam);
+      this.$root.onHorizontalClick(this.filtered[random].url);
+    });
+
     return response;
   },
 });
@@ -49,10 +86,10 @@ Vue.component("data-component", {
       <div class="title">
           <div class="subgrid">
               <div class="emoji">
-                  <img src="./assets/icons/fire.svg"/>
+                  <img :src="getLogo(pokemon.types[0].type.name)"/>
               </div>
               <div class="type">{{pokemon.types[0].type.name}}</div>
-              <div class="name">{{pokemon.name}}</div>
+              <div class="name">{{getName()}}</div>
               <div class="desc">It has a preference for hot things. When it rains, steam is said to spout from the tip of its tail.</div>
               <div class="details">
                   <div class="row">
@@ -63,10 +100,6 @@ Vue.component("data-component", {
                       <span>Weight</span>
                       <span>{{getWeight()}}</span>
                   </div>
-                  <div class="row">
-                      <span>Category</span>
-                      <span>Lizard</span>
-                  </div>
                   <div class="row" >
                       <span>Abilities</span>
                       <span>{{getAbility()}}</span>
@@ -75,7 +108,7 @@ Vue.component("data-component", {
           </div>
    
           <div class="picture">
-              <img class="picture" :src="getImg(pokemon.id)"></img>
+              <img class="picture" :src="image" @error="getAnotherImg()"></img>
 
           </div>
       </div>
@@ -94,23 +127,71 @@ Vue.component("data-component", {
       pokemon: {
         name: "Charmander",
       },
+      image: "",
+      types: [{ name: "fire", bgColor: "", fontColor: "var(--text-white)" }],
     };
   },
   watch: {
-    // a computed getter
     "$root.actualId": function () {
-      console.log("mudou id");
-      this.loadPokemon();
-      return this.actualId;
+      $(".content").animate(
+        {
+          opacity: 0,
+          paddingTop: 30,
+        },
+        500
+      );
+
+    
+
+      $(".back").show();
+      $(".next").show();
+
+      if (this.$root.actualId == 1) $(".back").hide();
+      if (this.$root.actualId == 10220) $(".next").hide();
+
+      setTimeout(() => {
+        $(".content .picture").css(
+          {
+            marginRight: -50,
+          },
+        );
+        $(".content .subgrid").css(
+          {
+            marginLeft: -50,
+          },
+        );
+        $(".content .stats").css(
+          {
+            marginTop: 50,
+          },
+        );
+        $(".content").css(
+          {
+            paddingTop: 0,
+          },
+        );
+        this.loadPokemon();
+      }, 500);
+
+      return;
     },
   },
   methods: {
     getImg(id) {
       return "assets/pokemon/" + id + ".png";
     },
+    getAnotherImg() {
+      this.image = this.getImg(4);
+    },
+    getLogo(type) {
+      return "assets/icons/" + type + ".svg";
+    },
+    getName() {
+      return this.pokemon.name.replaceAll("-", " ");
+    },
     async loadPokemon() {
       var aux = this.pokemon;
-      console.log();
+
       var response = await $.get(
         POKEAPI + "pokemon/" + this.$root.actualId,
         function (data) {
@@ -119,7 +200,55 @@ Vue.component("data-component", {
       );
 
       this.pokemon = aux;
-      console.log(this.pokemon);
+      this.image = this.getImg(aux.id);
+
+      var type = aux.types[0].type.name;
+      switch (type) {
+        case "electric":
+        case "ice":
+          this.$root.changeColor("#0c0c0d", type);
+          break;
+        default:
+          this.$root.changeColor("#ffffff", type);
+          break;
+      }
+      $(".content").animate(
+        {
+          opacity: 1,
+          paddingTop: 0,
+        },
+        {
+          duration: 500, queue:false
+        }
+      );
+      $(".content .picture").animate(
+        {
+          opacity: 1,
+          marginRight: 0,
+        },
+        {
+          duration: 500, queue:false
+        }
+      );
+      $(".content .subgrid").animate(
+        {
+          opacity: 1,
+          marginLeft: 0,
+        },
+        {
+          duration: 500, queue:false
+        }
+      );
+      $(".content .stats").animate(
+        {
+          opacity: 1,
+          marginTop: 0,
+        },
+        {
+          duration: 500, queue:false
+        }
+      );
+
       return response;
     },
     getHeight() {
@@ -137,6 +266,7 @@ Vue.component("data-component", {
     },
   },
   created: function () {
+    console.log("criou");
     this.loadPokemon();
   },
 });
@@ -144,16 +274,12 @@ Vue.component("data-component", {
 var app = new Vue({
   el: "#app",
   data: {
-    types: [{ name: "Fire", color: "" }],
-    actualId: 4,
+    actualId: 10220,
     isCreated: false,
   },
   methods: {
-    onClick: function (url) {
-      console.log("clicou");
-      $.get(url, function (data) {
-        console.log(data);
-      });
+    changeList(value) {
+      this.$emit("filter", value);
     },
     getActualId: function () {
       return this.actualId;
@@ -172,8 +298,30 @@ var app = new Vue({
       });
 
       this.actualId = aux;
-      console.log(this.actualId);
+
       return response;
+    },
+    onBackClick: function () {
+      this.$emit("back");
+    },
+    onNextClick: function () {
+      this.$emit("next");
+    },
+    sortId() {
+      this.$emit("sort");
+    },
+    changeColor: function (color, bgColor) {
+      if (color == "#0c0c0d") {
+        $("#app").addClass("dark");
+      } else {
+        $("#app").removeClass("dark");
+      }
+      $("#app").css({
+        background:
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.63) 0%, rgba(0, 0, 0, 0.63) 100%), var(--" +
+          bgColor +
+          ")",
+      });
     },
   },
   mounted: function () {
