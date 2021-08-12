@@ -1,7 +1,7 @@
 # Pokedex site
 
 ![Preview](https://github.com/monikode/pokedex/blob/master/print.png?raw=true) <br>
-> ![Dribbble](https://dribbble.com/monnifs) layout made by me <br>
+> [Dribbble](https://dribbble.com/monnifs) layout made by me <br>
 
 - [x] Style 
 - [x] Structure
