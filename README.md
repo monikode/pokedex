@@ -7,5 +7,7 @@
 - [x] Structure
 - [x] Responsivity
 - [x] Search
-- [ ] Filter
+- [ ] Filter 
+
+<br>
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=monikode.pokedex)
