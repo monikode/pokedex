@@ -28,7 +28,7 @@ Vue.component("search-component", {
   },
   watch: {
     value: function (data) {
-      this.$parent.changeList(data);
+      this.$parent.changeList(data.toLowerCase());
     },
   },
 });
@@ -57,7 +57,7 @@ Vue.component("nav-list", {
     this.filtered = aux;
 
     this.$root.$on("filter", (value) => {
-      this.filtered = this.list.filter((el) => el.name.includes(value.trim()));
+      this.filtered = this.list.filter((el) => el.name.toLowerCase().includes(value.trim()));
     });
 
     this.$root.$on("back", () => {
