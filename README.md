@@ -5,6 +5,6 @@
 
 - [x] Style 
 - [x] Structure
-- [ ] Responsivity
+- [x] Responsivity
 - [x] Search
 - [ ] Filter
