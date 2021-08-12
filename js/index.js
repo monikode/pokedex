@@ -108,15 +108,23 @@ Vue.component("data-component", {
           </div>
    
           <div class="picture">
-              <img class="picture" :src="image" @error="getAnotherImg()"></img>
+              <img :src="image" @error="getAnotherImg()"></img>
 
           </div>
       </div>
      
       <div class="stats">
-          <span>
-              Stats
-          </span>
+        <div class="title">Stats</div>
+        <div class="graphics" >
+          <div class="row" v-for="(item, i) in pokemon.stats">
+            <div class="name">{{getStatName(i)}}</div>
+            <div class="bar" >
+              <div class="inside" :style="{width: getStatWidth(i) }"></div>
+            </div>
+            <div class="base">{{item.base_stat}}</div>
+          </div>
+        </div>
+         
       </div>
       <div class="evolutions"></div>
   </div>
@@ -133,6 +141,7 @@ Vue.component("data-component", {
   },
   watch: {
     "$root.actualId": function () {
+      $(".loading").css({ opacity: 0.5 });
       $(".content").animate(
         {
           opacity: 0,
@@ -141,8 +150,6 @@ Vue.component("data-component", {
         500
       );
 
-    
-
       $(".back").show();
       $(".next").show();
 
@@ -150,26 +157,19 @@ Vue.component("data-component", {
       if (this.$root.actualId == 10220) $(".next").hide();
 
       setTimeout(() => {
-        $(".content .picture").css(
-          {
-            marginRight: -50,
-          },
-        );
-        $(".content .subgrid").css(
-          {
-            marginLeft: -50,
-          },
-        );
-        $(".content .stats").css(
-          {
-            marginTop: 50,
-          },
-        );
-        $(".content").css(
-          {
-            paddingTop: 0,
-          },
-        );
+        $(".content .picture").css({
+          marginRight: -50,
+        });
+        $(".content .subgrid").css({
+          marginLeft: -50,
+          paddingRight: 50,
+        });
+        $(".content .stats").css({
+          marginTop: 50,
+        });
+        $(".content").css({
+          paddingTop: 0,
+        });
         this.loadPokemon();
       }, 500);
 
@@ -189,6 +189,34 @@ Vue.component("data-component", {
     getName() {
       return this.pokemon.name.replaceAll("-", " ");
     },
+    getStatWidth(i) {
+      var total = 0;
+      switch (i) {
+        case 0:
+          total = 255;
+          break;
+        case 1:
+          total = 190;
+          break;
+        case 2:
+          total = 250;
+          break;
+        case 3:
+          total = 194;
+          break;
+        case 4:
+          total = 250;
+          break;
+        case 5:
+          total = 200;
+          break;
+      }
+      console.log((this.pokemon.stats[i].base_stat / total) * 100 + "%");
+      return (this.pokemon.stats[i].base_stat / total) * 100 + "%";
+    },
+    getStatName(i) {
+      return this.pokemon.stats[i].stat.name.replaceAll("-", " ");
+    },
     async loadPokemon() {
       var aux = this.pokemon;
 
@@ -196,6 +224,7 @@ Vue.component("data-component", {
         POKEAPI + "pokemon/" + this.$root.actualId,
         function (data) {
           aux = data;
+          $(".loading").css({ opacity: 0 });
         }
       );
 
@@ -218,7 +247,8 @@ Vue.component("data-component", {
           paddingTop: 0,
         },
         {
-          duration: 500, queue:false
+          duration: 500,
+          queue: false,
         }
       );
       $(".content .picture").animate(
@@ -227,16 +257,19 @@ Vue.component("data-component", {
           marginRight: 0,
         },
         {
-          duration: 500, queue:false
+          duration: 500,
+          queue: false,
         }
       );
       $(".content .subgrid").animate(
         {
           opacity: 1,
           marginLeft: 0,
+          paddingRight: 0,
         },
         {
-          duration: 500, queue:false
+          duration: 500,
+          queue: false,
         }
       );
       $(".content .stats").animate(
@@ -245,7 +278,8 @@ Vue.component("data-component", {
           marginTop: 0,
         },
         {
-          duration: 500, queue:false
+          duration: 500,
+          queue: false,
         }
       );
 
@@ -274,7 +308,7 @@ Vue.component("data-component", {
 var app = new Vue({
   el: "#app",
   data: {
-    actualId: 10220,
+    actualId: 2,
     isCreated: false,
   },
   methods: {
@@ -324,7 +358,10 @@ var app = new Vue({
       });
     },
   },
-  mounted: function () {
+  created: function () {
     this.isCreated = true;
+    this.actualId = 1;
+    if (this.actualId == 1) $(".back").hide();
+    if (this.actualId == 10220) $(".next").hide();
   },
 });

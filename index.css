@@ -2,7 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
 
-html {
+html,
+body {
   height: 100%;
 }
 
@@ -45,7 +46,6 @@ body {
   background-blend-mode: soft-light, normal;
   font-family: "Montserrat" !important;
   width: 100%;
-  height: 100%;
   transition: all 0.5s ease-in-out;
 }
 
@@ -63,22 +63,18 @@ body {
 .dark .back,
 .dark .next,
 .dark .github,
-.dark .dribbble
-{
+.dark .dribbble {
   color: #0c0c0d !important ;
 }
 
-.dark .line {
+.dark .line,
+.dark .inside {
   background-color: #0c0c0d !important ;
-
 }
 
-.dark .input-box ::placeholder
-{
+.dark .input-box ::placeholder {
   color: rgba(0, 0, 0, 0.75);
-
 }
-
 
 .dark input[type="search"]::-webkit-search-cancel-button {
   background: url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg)
@@ -86,7 +82,6 @@ body {
   background-size: contain;
   opacity: 1;
 }
-
 
 .topo {
   grid-area: topo;
@@ -158,12 +153,15 @@ body {
 .container {
   max-width: 900px;
   margin: 0 auto;
+  padding-bottom: 40px;
   position: relative;
 }
 
 .input-box {
+  display: flex;
   height: min-content;
   background-color: rgba(255, 255, 255, 0.22);
+  width: 250px;
   padding: 5px 10px;
   border-radius: 5px;
 }
@@ -173,6 +171,7 @@ body {
   border: none;
   color: #ffffff;
   font-family: "Montserrat";
+  flex: 1;
 }
 
 .input-box.searching {
@@ -231,7 +230,6 @@ input[type="search"]::-webkit-search-cancel-button {
   grid-template-rows: 150px min-content min-content min-content;
   grid-template-columns: min-content;
   transition: opacity padding 0.5s ease-in-out;
-
 }
 .emoji {
   grid-area: emoji;
@@ -247,12 +245,12 @@ input[type="search"]::-webkit-search-cancel-button {
   font-weight: 500;
   transition: all 0.5s ease-in-out;
 }
-.name {
+.subgrid .name {
   grid-area: name;
   font-family: Montserrat;
   font-style: normal;
   font-weight: bold;
-  font-size: 64px;
+  font-size: 4em;
   line-height: 60px;
   color: #ffffff;
   text-transform: capitalize;
@@ -270,17 +268,17 @@ input[type="search"]::-webkit-search-cancel-button {
   width: 100%;
 }
 
-.row {
+.details .row {
   display: flex;
   text-transform: capitalize;
   justify-content: space-between;
 }
 
-.row :first-child {
+.details .row :first-child {
   font-weight: bold;
 }
 
-.row :last-child {
+.details .row :last-child {
   width: 100%;
   text-align: end;
 }
@@ -288,18 +286,24 @@ input[type="search"]::-webkit-search-cancel-button {
   position: relative;
   pointer-events: none;
   height: 400px;
-  width: min-content;
+  width: 400px;
   z-index: 2;
-  transition: opacity padding 0.5s ease-in-out;
+  /* transition: all 0.5s ease-in-out; */
+}
+
+.picture img {
+  position: relative;
+  height: 400px;
+  width: 400px;
 }
 
 .picture::before {
   content: "";
   display: block;
   bottom: 0;
-  left: 0;
+  left: calc(50% - 100px);
   position: absolute;
-  width: 100%;
+  width: 200px;
   height: 50%;
   background-color: rgba(0, 0, 0, 0.1);
   -webkit-mask-image: radial-gradient(
@@ -313,12 +317,64 @@ input[type="search"]::-webkit-search-cancel-button {
     transparent 70%
   );
 }
+
+.stats {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.stats .title {
+  width: min-content;
+  box-sizing: border-box;
+  padding-right: 60px;
+
+  font-weight: 700;
+  font-size: 36px;
+}
+
+.stats .graphics {
+  flex: 1;
+}
+.stats .row {
+  display: flex;
+  height: 30px;
+  padding: 10px 0;
+}
+.row .name {
+  width: 150px;
+  text-transform: capitalize;
+}
+
+.stats .bar {
+  /* width: 300px; */
+  flex: 1;
+  height: 100%;
+}
+.stats .base {
+  width: 30px;
+  padding-left: 10px;
+}
+.bar .inside {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
 /* pokedex */
+.loading {
+  position: absolute;
+  top: 400px;
+  left: 50%;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
 .number {
   position: absolute;
   font-family: Montserrat;
   font-weight: 900;
-  font-size: 250px;
+  font-size: 20vmax;
 
   color: rgba(255, 255, 255, 0.18);
   user-select: none;
@@ -406,7 +462,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 /* transitions */
-.content.fade-in{
+.content.fade-in {
   opacity: 0;
   padding-top: 30px;
 }
@@ -420,16 +476,122 @@ input[type="search"]::-webkit-search-cancel-button {
   margin-left: -60px;
 }
 /* query */
-@media screen and (max-width: 668px) {
-  .nav {
+@media screen and (max-width: 1010px) {
+  .title {
+    flex-direction: column-reverse;
+  }
+  .title .subgrid {
     width: 100%;
-    height: max-content;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    grid-template-areas: "emoji type" "emoji name" "desc desc" "details details";
+    grid-template-rows: min-content min-content min-content;
+  }
+  .title > .picture {
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 
-  .lista {
-    height: max-content;
+  .stats {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .graphics {
+    width: 100%;
+  }
+
+  .container {
+    padding-bottom: 100px;
+    min-width: 300px;
+    margin: 0 30px;
+  }
+  .title .name {
+    word-break: break-all;
+  }
+  .picture {
+    width: 200px;
+    height: 200px;
+  }
+
+  .picture img {
+    height: 200px;
+    width: 200px;
+  }
+
+  .credits .line {
+    display: block;
+    height: 1px;
+    background-color: #ffffff;
+    width: 100px;
+  }
+  .credits {
+    z-index: 100;
+    position: absolute;
+    left: 0;
+    bottom: 30px;
+    color: #ffffff;
+    width: auto;
     display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+  }
+
+  .dribbble {
+    padding: 0 10px;
+  }
+
+  .number {
+    font-size: 30vmax;
+
+    color: rgba(255, 255, 255, 0.18);
+    user-select: none;
+    right: 0;
+    top: 100px;
+    z-index: 1;
+  }
+
+  .back,
+  .next {
+    position: absolute;
+    top: 75px;
+    font-size: 24px;
+    z-index: 91;
+  }
+
+  .back {
+    left: 5%;
+  }
+
+  .next {
+    right: 5%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .title .name {
+    font-size: 3em;
+  }
+
+  .filter {
+    margin-top: 20px;
+  }
+  .lista {
+    padding-top: 40px;
+  }
+  .back,
+  .next {
+    top: 115px;
+  }
+
+  .topo {
+    display: block;
+  }
+
+  .input-box {
+    width: 100%;
+  }
+
+  .filter {
+    text-align: center;
   }
 }

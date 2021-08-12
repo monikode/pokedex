@@ -1,54 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="index.css">
-    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css"
+      rel="stylesheet"
+    />
     <title>Pokedex</title>
-</head>
+  </head>
 
-<body >
-    <div id="app" >
-        <div v-if="isCreated" class="container">
-         
-            <div class="number">
-                {{getFormattedId()}}
-              </div>
-            <i class="icon ion-ios-arrow-back back" @click="onBackClick"></i>
+  <body>
+    <div id="app">
+        <div class="credits">
+            <a class="github" href="https://github.com/monikode">
+              <i class="icon ion-logo-github"></i>
+            </a>
+            <a class="dribbble" href="https://dribbble.com/monnifs">
+              <i class="icon ion-logo-dribbble"></i>
+            </a>
+            <div class="line"></div>
+          </div>
+      <div v-if="isCreated" class="container">
+        <div class="number">{{getFormattedId()}}</div>
+        <div class="loading">
+          <svg
+            width="50"
+            height="50"
+            viewBox="0 0 75 75"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              opacity="0.5"
+              d="M37.5001 0.416656C30.1657 0.416656 22.996 2.59156 16.8977 6.66633C10.7994 10.7411 6.04632 16.5327 3.23957 23.3088C0.432816 30.0849 -0.301558 37.5411 1.12931 44.7346C2.56018 51.928 6.09202 58.5357 11.2782 63.7219C16.4644 68.9081 23.072 72.4399 30.2655 73.8708C37.459 75.3016 44.9152 74.5673 51.6913 71.7605C58.4674 68.9538 64.259 64.2007 68.3338 58.1024C72.4085 52.0041 74.5834 44.8344 74.5834 37.5C74.5834 32.6301 73.6242 27.808 71.7606 23.3088C69.897 18.8097 67.1655 14.7216 63.722 11.2781C60.2785 7.83461 56.1904 5.10307 51.6913 3.23946C47.1921 1.37585 42.37 0.416656 37.5001 0.416656V0.416656ZM37.5001 67.1667C31.6326 67.1667 25.8968 65.4267 21.0182 62.1669C16.1395 58.9071 12.3371 54.2738 10.0917 48.8529C7.84627 43.4321 7.25877 37.4671 8.40347 31.7123C9.54816 25.9575 12.3736 20.6714 16.5226 16.5225C20.6716 12.3735 25.9576 9.54806 31.7124 8.40336C37.4672 7.25867 43.4322 7.84616 48.853 10.0916C54.2739 12.337 58.9072 16.1394 62.167 21.0181C65.4268 25.8967 67.1668 31.6325 67.1668 37.5C67.1668 45.3681 64.0412 52.9139 58.4776 58.4775C52.914 64.0411 45.3682 67.1667 37.5001 67.1667V67.1667Z"
+              fill="white"
+            />
+            <path
+              d="M67.1667 37.5H74.5833C74.5833 32.6301 73.6241 27.808 71.7605 23.3088C69.8969 18.8097 67.1654 14.7216 63.7219 11.2781C60.2784 7.83461 56.1903 5.10307 51.6912 3.23946C47.192 1.37585 42.3699 0.416656 37.5 0.416656V7.83332C45.3681 7.83332 52.9139 10.9589 58.4775 16.5225C64.0411 22.0861 67.1667 29.6319 67.1667 37.5Z"
+              fill="white"
+            />
 
-            <i class="icon ion-ios-arrow-forward next"  @click="onNextClick"></i>
-
-            <div class="credits"> 
-                <a class="github" href="https://github.com/monikode">
-                    <i class="icon ion-logo-github"></i>
-                </a>
-                <a class="dribbble" href="https://dribbble.com/monnifs">
-                    <i class="icon ion-logo-dribbble"></i>
-
-                </a>
-                <div class="line"></div>
-            </div>
-            <search-component></search-component>
-        
-            <div class="nav">
-                <nav-list/>
-            </div>
-            
-        
-            <data-component :pokemon-id="actualId"></data-component>
+            <animateTransform
+              attributeName="transform"
+              type="rotate"
+              from="0 0 0"
+              to="360 0 0"
+              dur="2s"
+              repeatCount="indefinite"
+            />
+          </svg>
         </div>
-        <div v-else="!isCreated">
-            <div>Loading </div>
+        <i class="icon ion-ios-arrow-back back" @click="onBackClick"></i>
+
+        <i class="icon ion-ios-arrow-forward next" @click="onNextClick"></i>
+
+       
+        <search-component></search-component>
+
+        <div class="nav">
+          <nav-list />
         </div>
-    
+
+        <data-component :pokemon-id="actualId"></data-component>
+      </div>
+      <div v-else="!isCreated">
+        <div>Loading</div>
+      </div>
     </div>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="js/index.js"></script>
-
-</body>
+  </body>
 </html>
