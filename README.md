@@ -6,5 +6,5 @@
 - [x] Style 
 - [x] Structure
 - [ ] Responsivity
-- [ ] Search
+- [x] Search
 - [ ] Filter
