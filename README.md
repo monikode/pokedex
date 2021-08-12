@@ -9,5 +9,5 @@
 - [x] Search
 - [ ] Filter 
 
-<br>
+</br>
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=monikode.pokedex)
