@@ -21,9 +21,8 @@ Vue.component("search-component", {
     };
   },
   methods: {
-    compositionUpdate: function(event)
-    {
-        this.value = event.data;
+    compositionUpdate: function (event) {
+      this.value = event.data;
     },
   },
   watch: {
@@ -57,7 +56,9 @@ Vue.component("nav-list", {
     this.filtered = aux;
 
     this.$root.$on("filter", (value) => {
-      this.filtered = this.list.filter((el) => el.name.toLowerCase().includes(value.trim()));
+      this.filtered = this.list.filter((el) =>
+        el.name.toLowerCase.includes(value.trim())
+      );
     });
 
     this.$root.$on("back", () => {
@@ -143,11 +144,14 @@ Vue.component("data-component", {
       },
       image: "",
       types: [{ name: "fire", bgColor: "", fontColor: "var(--text-white)" }],
+      loaded:false
     };
   },
   watch: {
     "$root.actualId": function () {
-      $(".loading").css({ opacity: 0.5 });
+      if(this.loaded) {
+        this.loaded=false
+        $(".loading").css({ opacity: 0.5 });
       $(".content").animate(
         {
           opacity: 0,
@@ -180,6 +184,7 @@ Vue.component("data-component", {
       }, 500);
 
       return;
+    }
     },
   },
   methods: {
@@ -231,6 +236,7 @@ Vue.component("data-component", {
         function (data) {
           aux = data;
           $(".loading").css({ opacity: 0 });
+          console.log("entrou api");
         }
       );
 
@@ -255,6 +261,11 @@ Vue.component("data-component", {
         {
           duration: 500,
           queue: false,
+          fail: () => console.log("falhou"),
+          done:  () =>{ 
+            console.log("done", this.$root.actualId)
+          }
+
         }
       );
       $(".content .picture").animate(
@@ -265,6 +276,8 @@ Vue.component("data-component", {
         {
           duration: 500,
           queue: false,
+          fail: () => console.log("falhou"),
+          done:  () => console.log("done"),
         }
       );
       $(".content .subgrid").animate(
@@ -288,6 +301,7 @@ Vue.component("data-component", {
           queue: false,
         }
       );
+      this.loaded = true
 
       return response;
     },
