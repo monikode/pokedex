@@ -5,7 +5,7 @@ Vue.component("search-component", {
   template: `
   <header class="topo" ref="sc">
   <div class="input-box">
-      <input type="search" placeholder="Search here" v-model="value">
+      <input type="search" placeholder="Search here" v-model="value" @compositionupdate="compositionUpdate($event)">
    <i class="icon ion-ios-search"></i>
    <i class="icon ion-ios-shuffle" @click="$root.sortId"></i>
   </div>
@@ -19,6 +19,12 @@ Vue.component("search-component", {
     return {
       value: "",
     };
+  },
+  methods: {
+    compositionUpdate: function(event)
+    {
+        this.value = event.data;
+    },
   },
   watch: {
     value: function (data) {
