@@ -1,7 +1,7 @@
 var range = 20;
 var POKEAPI = "https://pokeapi.co/api/v2/";
 
-var app = new Vue.createApp({
+var app = Vue.createApp({
   el: "#app",
   data: {
     actualId: 2,
