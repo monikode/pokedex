@@ -1,7 +1,68 @@
 var range = 20;
 var POKEAPI = "https://pokeapi.co/api/v2/";
 
-Vue.component("search-component", {
+var app = new Vue({
+  el: "#app",
+  data: {
+    actualId: 2,
+    isCreated: false,
+  },
+  methods: {
+    changeList(value) {
+      this.$emit("filter", value);
+    },
+    getActualId: function () {
+      return this.actualId;
+    },
+    getFormattedId: function () {
+      var str = this.actualId.toString();
+      while (str.length < 3) {
+        str = "0" + str;
+      }
+      return `#${str}`;
+    },
+    onHorizontalClick: async function (url) {
+      var aux = this.actualId;
+      var response = await $.get(url, function (data) {
+        aux = data.id;
+      });
+
+      this.actualId = aux;
+
+      return response;
+    },
+    onBackClick: function () {
+      this.$emit("back");
+    },
+    onNextClick: function () {
+      this.$emit("next");
+    },
+    sortId() {
+      this.$emit("sort");
+    },
+    changeColor: function (color, bgColor) {
+      if (color == "#0c0c0d") {
+        $("#app").addClass("dark");
+      } else {
+        $("#app").removeClass("dark");
+      }
+      $("#app").css({
+        background:
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.63) 0%, rgba(0, 0, 0, 0.63) 100%), var(--" +
+          bgColor +
+          ")",
+      });
+    },
+  },
+  created: function () {
+    this.isCreated = true;
+    this.actualId = 1;
+    if (this.actualId == 1) $(".back").hide();
+    if (this.actualId == 10220) $(".next").hide();
+  },
+});
+
+app.component("search-component", {
   template: `
   <header class="topo" ref="sc">
   <div class="input-box">
@@ -32,7 +93,7 @@ Vue.component("search-component", {
   },
 });
 
-Vue.component("nav-list", {
+app.component("nav-list", {
   template: `
   <div class="lista">
     <span v-for="(item, i) in filtered" class="element" :key="i" >
@@ -85,7 +146,7 @@ Vue.component("nav-list", {
   },
 });
 
-Vue.component("data-component", {
+app.component("data-component", {
   template: `
   <div class="content">
   <div>
@@ -325,63 +386,5 @@ Vue.component("data-component", {
   },
 });
 
-var app = new Vue({
-  el: "#app",
-  data: {
-    actualId: 2,
-    isCreated: false,
-  },
-  methods: {
-    changeList(value) {
-      this.$emit("filter", value);
-    },
-    getActualId: function () {
-      return this.actualId;
-    },
-    getFormattedId: function () {
-      var str = this.actualId.toString();
-      while (str.length < 3) {
-        str = "0" + str;
-      }
-      return `#${str}`;
-    },
-    onHorizontalClick: async function (url) {
-      var aux = this.actualId;
-      var response = await $.get(url, function (data) {
-        aux = data.id;
-      });
+app.mount("#app")
 
-      this.actualId = aux;
-
-      return response;
-    },
-    onBackClick: function () {
-      this.$emit("back");
-    },
-    onNextClick: function () {
-      this.$emit("next");
-    },
-    sortId() {
-      this.$emit("sort");
-    },
-    changeColor: function (color, bgColor) {
-      if (color == "#0c0c0d") {
-        $("#app").addClass("dark");
-      } else {
-        $("#app").removeClass("dark");
-      }
-      $("#app").css({
-        background:
-          "linear-gradient(180deg, rgba(255, 255, 255, 0.63) 0%, rgba(0, 0, 0, 0.63) 100%), var(--" +
-          bgColor +
-          ")",
-      });
-    },
-  },
-  created: function () {
-    this.isCreated = true;
-    this.actualId = 1;
-    if (this.actualId == 1) $(".back").hide();
-    if (this.actualId == 10220) $(".next").hide();
-  },
-});
